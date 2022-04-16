@@ -26,10 +26,10 @@ public class bankier {
 	@FindBy(xpath = "//tbody[1]/tr[2]/td[3]")
 	WebElement GoldCourse;
 
-	@FindBy(xpath = "//span[@class='MuiButton-label' and text()='Accept All']")
+	@FindBy(xpath = "//span[@class='MuiButton-label' and text()='Zaakceptuj wszystko']")
 	WebElement popup;
 
-	public String GetGoldCourse(WebDriver driver) {
+	public Double GetGoldCourse(WebDriver driver) {
 
 		driver.get("https://www.bankier.pl/");
 
@@ -39,8 +39,16 @@ public class bankier {
 		dropdown.click();
 		materials.click();
 		moreLink.click();
-		System.out.println(GoldCourse.getText());
-		return GoldCourse.getText();
+		//convert WebElement to string
+		String Gold = GoldCourse.getText().toString();
+		//Delete and replace illegal chars for double
+		Gold = Gold.replace(" ", "").replace(",", ".");
+		//convert String to Double
+		Double doubleGold = Double.parseDouble(Gold);
+		System.out.println(doubleGold);
+
+		return doubleGold;
+
 
 	}
 

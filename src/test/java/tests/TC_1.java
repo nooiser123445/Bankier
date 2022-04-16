@@ -14,7 +14,7 @@ import pages.bankier;
 
 public class TC_1 {
 
-	String driverPath = "C://Drivers/chromedriver.exe";
+	String driverPath = "C://Work/Drivers/chromedriver.exe";
 	WebDriver driver;
 
 	@SuppressWarnings("deprecation")
@@ -23,7 +23,7 @@ public class TC_1 {
 
 		System.setProperty("webdriver.chrome.driver", driverPath);
 		driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
 	}
 
@@ -32,14 +32,15 @@ public class TC_1 {
 
 		bankier bankierPage = new bankier(driver);
 		ApiGoldPrice apiGoldPage = new ApiGoldPrice(driver);
-
-		Assert.assertEquals(apiGoldPage.apiGold(driver), bankierPage.GetGoldCourse(driver));
+		//Assertion with tolerance of 200 USD
+		Assert.assertEquals(bankierPage.GetGoldCourse(driver), apiGoldPage.apiGold(driver), 200, "The maximum tolerance is: 200 USD.");
 
 	}
 
 	@AfterTest
 	public void shutDown() {
-		driver.quit();
+	   driver.quit();
 	}
+	
 
 }
