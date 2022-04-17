@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+
 public class ApiGoldPrice {
 	WebDriver driver;
 
@@ -17,11 +18,12 @@ public class ApiGoldPrice {
 	}
 	//1 ounce - 28.35 grams
 	double ounce = 28.35;
-	//1 USD - 4.28 PLN
-	double PlnToUsd = 4.28;
 
 	@FindBy(css = "body > div:nth-child(3) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > span:nth-child(2)")
 	WebElement goldApi;
+	
+	@FindBy(tagName="pre")
+	WebElement rate;
 	
 	public Double apiGold(WebDriver driver) {
 
@@ -32,7 +34,8 @@ public class ApiGoldPrice {
 		//convert grams to ounce
 		double convertOunce = goldtoDouble*ounce;
 		//convert PLN to USD
-		double finalValue = convertOunce/PlnToUsd;
+		plnCourse plnCoursePage = new plnCourse(driver);
+		double finalValue = convertOunce*plnCoursePage.getPLNCourse(driver);
 		//round a double to 2 decimal places
 		double finalValueConverted = new BigDecimal(finalValue)
 				.setScale(2, RoundingMode.HALF_UP).doubleValue();

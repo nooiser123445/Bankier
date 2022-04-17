@@ -1,7 +1,9 @@
 package pages;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -27,16 +29,28 @@ public class bankier {
 	WebElement GoldCourse;
 
 	@FindBy(xpath = "//span[@class='MuiButton-label' and text()='Zaakceptuj wszystko']")
-	WebElement popup;
+	WebElement popupPOL;
+	
+	@FindBy(xpath = "//span[@class='MuiButton-label' and text()='Accept All']")
+	WebElement popupENG;
 
 	public Double GetGoldCourse(WebDriver driver) {
 
 		driver.get("https://www.bankier.pl/");
 
 		this.driver.switchTo().frame("cmp-iframe");
-		popup.click();
+		//POL/ENG Popup workaround
+		try {
+			popupENG.click();
+		}catch (NoSuchElementException e) {
+			popupPOL.click();
+		}
 		this.driver.switchTo().defaultContent();
-		dropdown.click();
+		
+		//move mouse to element
+		Actions a = new Actions(driver);
+		a.moveToElement(dropdown).perform();
+		
 		materials.click();
 		moreLink.click();
 		//convert WebElement to string
